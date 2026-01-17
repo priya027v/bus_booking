@@ -1,24 +1,28 @@
 pipeline {
-    agent { label 'slave1' }
-
-    tools {
-        jdk 'Java21.0.9'
-        maven ' Maven 3.8.7'
-    }
+    agent { label 'slave2' }
 
     stages {
 
         stage('Checkout Code') {
             steps {
-                echo 'Cloning Bus Booking repository...'
                 checkout scm
             }
         }
 
         stage('Build Application') {
             steps {
-                echo 'Building application using Maven...'
+                sh 'java -version'
+                sh 'mvn -version'
                 sh 'mvn clean install'
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                sh '''
+                    nohup mvn spring-boot:run > app.log 2>&1 &
+                    sleep 15
+                '''
             }
         }
     }
