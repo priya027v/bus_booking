@@ -2,8 +2,8 @@ pipeline {
     agent { label 'slave1' }
 
     tools {
-        jdk 'Java11'
-        maven 'Maven3'
+        jdk 'Java21.0.9'
+        maven ' Maven 3.8.7'
     }
 
     stages {
