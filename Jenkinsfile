@@ -14,7 +14,7 @@ pipeline {
         stage('checkout') {
             steps {
                 sh 'rm -rf bus_booking'
-                sh 'git clone https://github.com/sudhasanshi/bus_booking.git'
+                sh 'git clone https://github.com/priya027v/bus_booking.git'
             }
         }
 
@@ -28,3 +28,4 @@ pipeline {
             }
         }
     }
+}
