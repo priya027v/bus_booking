@@ -25,11 +25,12 @@ pipeline {
 
         stage('Upload to Artifactory') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'artifactory-creds',
-                    usernameVariable: 'ART_USER',
-                    passwordVariable: 'ART_PASS'
-                )]) {
+                 usernamePassword(
+                credentialsId: 'jfrog',
+                usernameVariable: 'JFROG_USER',
+                passwordVariable: 'JFROG_PASS'
+                 )
+            ]) {
                     sh '''
                         export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
                         export PATH=$JAVA_HOME/bin:$PATH
