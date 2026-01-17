@@ -6,7 +6,7 @@ pipeline {
     environment {
         TOMCAT_HOST = '16.171.40.186'
         TOMCAT_USER = 'root'
-        TOMCAT_DIR = '/opt/apache-tomcat-8.5.98/webapps'
+        TOMCAT_DIR = '/opt/tomcat/webapps'
         JAR_FILE = 'bus-booking-app-1.0-SNAPSHOT.jar'  // Replace with the actual name of your JAR file
     }
 
@@ -27,6 +27,4 @@ pipeline {
                 }
             }
         }
-
-
-
+    }
