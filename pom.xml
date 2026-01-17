@@ -21,7 +21,19 @@
     <properties>
         <java.version>11</java.version>
     </properties>
+   
+         <distributionManagement>
+    <repository>
+        <id>jfrog</id>
+        <url>http://13.60.214.140:8081/artifactory/libs-release-local</url>
+    </repository>
 
+    <snapshotRepository>
+        <id>jfrog</id>
+        <url>http://13.60.214.140:8081/artifactory/libs-snapshot-local</url>
+    </snapshotRepository>
+   </distributionManagement>
+         
     <!-- Dependencies -->
     <dependencies>
         <!-- Spring Boot Starter Web for building web applications -->
