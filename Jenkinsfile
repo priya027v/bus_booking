@@ -1,56 +1,47 @@
 pipeline {
-    agent { label 'slave2' }
+    agent any
 
     stages {
 
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                checkout scm
+                cleanWs()
+                git branch: 'feature-1',
+                    url: 'https://github.com/priya027v/bus_booking.git'
             }
         }
 
-        stage('Build Application') {
+        stage('Build') {
             steps {
                 sh '''
-                    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-                    export PATH=$JAVA_HOME/bin:$PATH
-
-                    java -version
-                    javac -version
-                    mvn -version
                     mvn clean install
                 '''
             }
         }
 
-        stage('Upload to Artifactory') {
+        stage('Run App (5 min)') {
             steps {
-                   withCredentials([
-                 usernamePassword(
-                credentialsId: 'jfrog',
-                usernameVariable: 'JFROG_USER',
-                passwordVariable: 'JFROG_PASS'
-            )
-        ]) {
+                timeout(time: 5, unit: 'MINUTES') {
                     sh '''
-                        export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-                        export PATH=$JAVA_HOME/bin:$PATH
-
-                        mvn deploy \
-                          -DskipTests \
-                          -Dusername=$ART_USER \
-                          -Dpassword=$ART_PASS
+                        java -jar target/bus-booking-app-1.0-SNAPSHOT.war
                     '''
                 }
             }
         }
 
-        stage('Run Application') {
+        stage('Deploy') {
             steps {
-                sh '''
-                    nohup mvn spring-boot:run > app.log 2>&1 &
-                    sleep 15
-                '''
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'jfrog',
+                        usernameVariable: 'JFROG_USER',
+                        passwordVariable: 'JFROG_API_KEY'
+                    )
+                ]) {
+                    sh '''
+                        mvn deploy
+                    '''
+                }
             }
         }
     }
