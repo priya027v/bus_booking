@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Publish') {
             steps {
                 withCredentials([
                     usernamePassword(
