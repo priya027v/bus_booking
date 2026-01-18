@@ -29,6 +29,22 @@ pipeline {
         //     }
         // }
 
+    //     stage('Publish') {
+    //         steps {
+    //             withCredentials([
+    //                 usernamePassword(
+    //                     credentialsId: 'jfrog',
+    //                     usernameVariable: 'JFROG_USER',
+    //                     passwordVariable: 'JFROG_API_KEY'
+    //                 )
+    //             ]) {
+    //                 sh '''
+    //                     mvn deploy
+    //                 '''
+    //             }
+    //         }
+    //     }
+    // }
         stage('Publish') {
             steps {
                 withCredentials([
@@ -38,11 +54,17 @@ pipeline {
                         passwordVariable: 'JFROG_API_KEY'
                     )
                 ]) {
-                    sh '''
-                        mvn deploy
-                    '''
+                    configFileProvider([
+                        configFile(
+                            fileId: 'maven-settings-jfrog',
+                            variable: 'MAVEN_SETTINGS'
+                        )
+                    ]) {
+                        sh '''
+                            mvn deploy -s $MAVEN_SETTINGS
+                        '''
+                    }
                 }
             }
         }
-    }
 }
