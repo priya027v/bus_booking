@@ -25,7 +25,7 @@ pipeline {
 
         stage('Upload to Artifactory') {
             steps {
-                 usernamePassword(
+                 usernamePassword([
                 credentialsId: 'jfrog',
                 usernameVariable: 'JFROG_USER',
                 passwordVariable: 'JFROG_PASS'
